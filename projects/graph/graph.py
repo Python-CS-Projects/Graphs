@@ -9,9 +9,7 @@ class Graph:
     """Represent a graph as a dictionary of vertices mapping labels to edges."""
 
     def __init__(self):
-        self.vertices = {"A": set(),
-                         "B": set()
-                         }
+        self.vertices = {}
 
     def add_vertex(self, vertex_id):
         """
@@ -37,14 +35,57 @@ class Graph:
         Print each vertex in breadth-first order
         beginning from starting_vertex.
         """
-        pass  # TODO
+        # Create an empty queue
+        q = Queue()
+        # Enqueue the stating_virtex
+        q.enqueue(starting_vertex)
+        # Create a set ti tracj vertices we have visited
+        visited = set()
+        # While the queue is empty
+        while q.size() > 0:
+            # Dequeue, this our current_node
+            current_node = q.dequeue()
+            # Mark as visited
+            if current_node not in visited:
+                print(current_node)
+                visited.add(current_node)
+                # Get its neighbors
+                neighbors = self.get_neighbors(current_node)
+                # and add each to the back of the queue
+                for neighbor in neighbors:
+                    q.enqueue(neighbor)
+        # Return visited
+        return visited
 
     def dft(self, starting_vertex):
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
+        The difference between bft and dft is 
+        here we use a stack instead of a queue
+        O(Viteces + Edges) time complexity
         """
-        pass  # TODO
+        # Create an empty queue
+        stack = Stack()
+        # Enqueue the stating_virtex
+        stack.push(starting_vertex)
+        # Create a set ti tracj vertices we have visited
+        visited = set()
+        # While the queue is empty
+        while stack.size() > 0:
+            # Dequeue, this our current_node
+            current_node = stack.pop()
+            # Mark as visited
+            if current_node not in visited:
+                print(current_node)
+                visited.add(current_node)
+                # Get its neighbors
+                neighbors = self.get_neighbors(current_node)
+                # and add each to the back of the queue
+                for neighbor in neighbors:
+                    stack.push(neighbor)
+        # Return visited
+        return visited
 
     def dft_recursive(self, starting_vertex):
         """
