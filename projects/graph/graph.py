@@ -69,7 +69,7 @@ class Graph:
         stack = Stack()
         # Enqueue the stating_virtex
         stack.push(starting_vertex)
-        # Create a set ti tracj vertices we have visited
+        # Create a set to track vertices we have visited
         visited = set()
         # While the queue is empty
         while stack.size() > 0:
@@ -102,7 +102,10 @@ class Graph:
         starting_vertex to destination_vertex in
         breath-first order.
         """
-        pass  # TODO
+        x = self.bft(starting_vertex)
+        print(f"XXX bfs XXXX {self.vertices}")
+        for v in self.vertices:
+            print(v)
 
     def dfs(self, starting_vertex, destination_vertex):
         """
