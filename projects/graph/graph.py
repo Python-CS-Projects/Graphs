@@ -61,7 +61,7 @@ class Graph:
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
-        The difference between bft and dft is 
+        The difference between bft and dft is
         here we use a stack instead of a queue
         O(Viteces + Edges) time complexity
         """
@@ -102,10 +102,16 @@ class Graph:
         starting_vertex to destination_vertex in
         breath-first order.
         """
-        x = self.bft(starting_vertex)
-        print(f"XXX bfs XXXX {self.vertices}")
-        for v in self.vertices:
-            print(v)
+        print("XXX Start bfs XXXX")
+        visited = self.bft(starting_vertex)
+        # print(visited)
+        for node in visited:
+            x = self.get_neighbors(node)
+            print(x)
+            if destination_vertex in x:
+                print("Got it!")
+
+        print("XXX End bfs XXXX")
 
     def dfs(self, starting_vertex, destination_vertex):
         """
