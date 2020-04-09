@@ -103,13 +103,26 @@ class Graph:
         breath-first order.
         """
         print("XXX Start bfs XXXX")
-        visited = self.bft(starting_vertex)
-        # print(visited)
-        for node in visited:
-            x = self.get_neighbors(node)
-            print(x)
-            if destination_vertex in x:
-                print("Got it!")
+        # Create an empty queue
+        queue = Queue()
+        # Enqueue the stating_virtex
+        queue.enqueue(starting_vertex)
+        # Create a set ti tracj vertices we have visited
+        visited = set()
+        # While the queue is empty
+        x = True
+        while queue.size() > 0:
+            # peek at head
+            current_node = queue.dequeue()
+            n = self.get_neighbors(current_node)
+
+            if destination_vertex in n:
+                print("Got it")
+                queue.enqueue(n)
+            queue.dequeue()
+        print(f"Result {queue}")
+        # for x in current_node.edges:
+        # print(x)
 
         print("XXX End bfs XXXX")
 
