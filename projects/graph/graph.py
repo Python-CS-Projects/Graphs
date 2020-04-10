@@ -48,26 +48,29 @@ class Graph:
         Print each vertex in breadth-first order
         beginning from starting_vertex.
         """
-        # Create an empty queue
+        # Create queue
         q = Queue()
-        # Enqueue the stating_virtex
+        # Enqueue/add the starting_vertex
         q.enqueue(starting_vertex)
         # Create a set ti tracj vertices we have visited
         visited = set()
-        # While the queue is empty
+        # While the queue is NOT empty
         while q.size() > 0:
-            # Dequeue, this our current_node
+            # Dequeue, the current vertex/node to deplete while loop
             current_node = q.dequeue()
-            # Mark as visited
+            # If the current_node is not in the visited set()
             if current_node not in visited:
                 print(current_node)
+                # Add the current node/vertex to the set() of visited vertexes
                 visited.add(current_node)
-                # Get its neighbors
+                # Now get the current_node's neighbors
                 neighbors = self.get_neighbors(current_node)
-                # and add each to the back of the queue
+                # iterate over the neighbors because is a set()
                 for neighbor in neighbors:
+                    # and add each to the back of the queue/line to keep running loop
+                    # until we have visited all the neighbors
                     q.enqueue(neighbor)
-        # Return visited
+        # When the queue is empty return set() of visited nodes = all nodes
         return visited
 
     def dft(self, starting_vertex):
