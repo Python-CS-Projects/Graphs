@@ -113,26 +113,33 @@ class Graph:
         print("XXX Start bfs XXXX")
         # Create an empty queue
         q = Queue()
-        # Enqueue the stating_virtex
-        q.enqueue(starting_vertex)
-        # Create a set ti tracj vertices we have visited
+
         visited = set()
-        # While the queue is empty
-        x = True
+        # Array of vetexes which are the path to destination
+        path = [starting_vertex]
+
+        q.enqueue(path)
+
+        # While queue is empty
         while q.size() > 0:
-            # peek at head
-            current_node = q.dequeue()
-            n = self.get_neighbors(current_node)
+            # Dequeue, this is our current_path
+            current_path = q.dequeue()
+            # current node is the last whats in the last path
+            current_node = current_path[-1]
+            # check if current_node is detination_vertext
+            if current_node is destination_vertex:
+                return current_path
+            # check if we have visited this node before
+            if current_node not in visited:
+                visited.add(current_node)
 
-            if destination_vertex in n:
-                print("Got it")
-                q.enqueue(n)
-            q.dequeue()
-        print(f"Result {q}")
-        # for x in current_node.edges:
-        # print(x)
-
-        print("XXX End bfs XXXX")
+                neighbors = self.get_neighbors(current_node)
+                # for each neighbor
+                for neighbor in neighbors:
+                    # copy the current path python syntaxt to copy the entire path
+                    path_copy = current_path[:]
+                    path_copy.append(neighbor)
+                    q.enqueue(path_copy)
 
     def dfs(self, starting_vertex, destination_vertex):
         """
@@ -140,7 +147,37 @@ class Graph:
         starting_vertex to destination_vertex in
         depth-first order.
         """
-        pass  # TODO
+        print("XXX Start dfs XXXX")
+        # Create an empty queue
+        stack = Stack()
+
+        visited = set()
+        # Array of vetexes which are the path to destination
+        path = [starting_vertex]
+
+        stack.push(path)
+
+        # While queue is empty
+        while stack.size() > 0:
+            # Dequeue, this is our current_path
+            current_path = stack.pop()
+            # current node is the last whats in the last path
+            current_node = current_path[-1]
+            # check if current_node is detination_vertext
+            if current_node is destination_vertex:
+                return current_path
+            # check if we have visited this node before
+            if current_node not in visited:
+                visited.add(current_node)
+
+                neighbors = self.get_neighbors(current_node)
+                # for each neighbor
+                for neighbor in neighbors:
+                    # copy the current path python syntaxt to copy the entire path
+                    path_copy = current_path[:]
+                    path_copy.append(neighbor)
+
+                    stack.push(path_copy)
 
     def dfs_recursive(self, starting_vertex, destination_vertex):
         """
