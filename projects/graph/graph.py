@@ -87,14 +87,22 @@ class Graph:
         # Return visited
         return visited
 
-    def dft_recursive(self, starting_vertex):
+    def dft_recursive(self, vertex, visited=set()):
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
 
         This should be done using recursion.
         """
-        pass  # TODO
+        if vertex not in visited:
+            visited.add(vertex)
+            neighbors = self.get_neighbors(vertex)
+            # Base case not explicitly needed
+            for neighbor in neighbors:
+                # Call the func again
+                self.dfs_recursive(neighbor, visited)
+
+        return visited
 
     def bfs(self, starting_vertex, destination_vertex):
         """
@@ -104,23 +112,23 @@ class Graph:
         """
         print("XXX Start bfs XXXX")
         # Create an empty queue
-        queue = Queue()
+        q = Queue()
         # Enqueue the stating_virtex
-        queue.enqueue(starting_vertex)
+        q.enqueue(starting_vertex)
         # Create a set ti tracj vertices we have visited
         visited = set()
         # While the queue is empty
         x = True
-        while queue.size() > 0:
+        while q.size() > 0:
             # peek at head
-            current_node = queue.dequeue()
+            current_node = q.dequeue()
             n = self.get_neighbors(current_node)
 
             if destination_vertex in n:
                 print("Got it")
-                queue.enqueue(n)
-            queue.dequeue()
-        print(f"Result {queue}")
+                q.enqueue(n)
+            q.dequeue()
+        print(f"Result {q}")
         # for x in current_node.edges:
         # print(x)
 
