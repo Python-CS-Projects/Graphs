@@ -11,24 +11,37 @@ class Graph:
     def __init__(self):
         self.vertices = {}
 
+    # Adds a key+set() to the diccionary
     def add_vertex(self, vertex_id):
         """
         Add a vertex to the graph.
+        this creates a diccionary of key + set()
         """
+        # the value is saved in a diccionary to easyly access it
+        # the set is use to store edges
         self.vertices[vertex_id] = set()
 
+    # Add an edge between two vetices/nodes
     def add_edge(self, v1, v2):
         """
         Add a directed edge to the graph.
         """
+        # v1_edges_set = the current key in the diccionary
         v1_edges_set = self.vertices[v1]
+        # Adds the second value to the first value in the diccionary
         v1_edges_set.add(v2)
+        # The result will be {Nodes/Vertices: (edges/relationships)}
+        # we added to only one because is a directed edge and not both ways
 
     def get_neighbors(self, vertex_id):
         """
         Get all neighbors (edges) of a vertex.
         """
-        return self.vertices[vertex_id]
+        # Returns the set() of edges which are the neighbors
+        if self.vertices[vertex_id]:
+            return self.vertices[vertex_id]
+        else:
+            print(f"Node {vertex_id} does not exists.")
 
     def bft(self, starting_vertex):
         """
