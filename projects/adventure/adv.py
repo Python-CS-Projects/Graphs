@@ -5,13 +5,31 @@ from world import World
 import random
 from ast import literal_eval
 
+
+class Queue():
+    def __init__(self):
+        self.queue = []
+
+    def enqueue(self, value):
+        self.queue.append(value)
+
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+
+    def size(self):
+        return len(self.queue)
+
+
 # Load world
 world = World()
 
 
 # You may uncomment the smaller graphs for development and testing purposes.
-# map_file = "maps/test_line.txt"
-map_file = "maps/test_cross.txt"
+map_file = "maps/test_line.txt"
+# map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
 # map_file = "maps/main_maze.txt"
@@ -29,6 +47,48 @@ player = Player(world.starting_room)
 # traversal_path = ['n', 'n']
 traversal_path = []
 
+"""
+Solution:
+We start at 0000 which is in the middle
+Useful commands:
+`player.current_room.id`
+`player.current_room.get_exits()`
+`player.travel(direction)`
+
+Final:
+{
+  0: {'n': '?', 's': '?', 'w': '?', 'e': '?'}
+}
+"""
+
+# print(f"Rooms: {room_graph}")
+# print("----------------------")
+# print(f"Current room: {player.current_room.id}")
+# print(f"Exits: {player.current_room.get_exits()}")
+# print("----------------------")
+# player.travel('s')
+# print("Travel: South")
+# print(f"Current room: {player.current_room.id}")
+# print(f"Exits: {player.current_room.get_exits()}")
+# print("----------------------")
+
+
+# Diccionary of rooms explored
+
+# List of the path to get back
+
+# List of opposite directions
+
+# Get current room
+
+# add current room to the explored dic
+
+# iterate over the neighbors of the current room
+
+
+"""
+End of Solution.
+"""
 
 # TRAVERSAL TEST
 visited_rooms = set()
