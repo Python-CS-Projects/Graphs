@@ -5,7 +5,7 @@ from world import World
 import random
 from ast import literal_eval
 
-
+# Import Stack and Queue
 from util import Stack, Queue
 
 # Load world
@@ -14,10 +14,10 @@ world = World()
 
 # You may uncomment the smaller graphs for development and testing purposes.
 # map_file = "maps/test_line.txt"
-map_file = "maps/test_cross.txt"
+# map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
-# map_file = "maps/main_maze.txt"
+map_file = "maps/main_maze.txt"
 
 # Loads the map into a dictionary
 room_graph = literal_eval(open(map_file, "r").read())
@@ -59,28 +59,145 @@ print("----------------------")
 print("Start of Solution.")
 print("----------------------")
 
-# Graph
-graph = {}
-# Add "?" to the exits
+
+def reverseDir(dir):
+    if dir == "n":
+        return "s"
+    if dir == "s":
+        return "n"
+    if dir == "e":
+        return "w"
+    if dir == "w":
+        return "e"
+    else:
+        return None
 
 
-def pre_graph():
-    # Initialize the nested diccionary
-    graph[player.current_room.id] = {}
-    for x in player.current_room.get_exits():
-        # Add "?" to each exit
-        graph[player.current_room.id][x] = "?"
+def find_shortest_path(adj):  # BFS
+    # Create an empty queue
+    q = Queue()
+    # Enqueue
+    q.enqueue([player.current_room.id])
+    # Create visited
+    visited = set()
+    # Loop
+    while q.size() > 0:
+        # get the path and dequeue
+        path = q.dequeue()
+        # Get the current node
+        vert = path[-1]
+        #If not in visited
+        if vert not in visited:
+            # Look for "?"
+            if "?" in adj[vert].values():
+                # print(f"Path: {path}")
+                return path
+            # Add to visited
+            visited.add(vert)
+            # Iterate over the neighbors
+            for room in adj[vert].values():
+                new_path = list(path)
+                new_path.append(room)
+                q.enqueue(new_path)
+                # print(f"Room {room}")
+                # print(f"Path {new_path}")
+    return None
 
 
-pre_graph()
-print(graph)
-# Create a DFT
+def get_dirPath(adj, path):  # Get the direccion coodinates n,s,w,e
+    new_path = []
+    # Iterate over the path
+    for idx, room in enumerate(path):
+        # print(f"IDX: {idx}")
+        if idx > 0:
+            lastRoom = path[idx - 1]
 
-# BFS to search for rooms with a question mark
+            for direction in adj[lastRoom]:
+                if adj[lastRoom][direction] == room:
+                    # print(f"Direccion: {direction}")
+                    # Append the coodinate direccion
+                    new_path.append(direction)
+    return new_path
 
-# BFS will return a list of id's we need to convert to coordinates
 
-# if all paths has been explored then return the list append to traversal_path
+def travel_dir_path(traversal, path):  # Helper func to move to another room
+    for direction in path:
+        traversal.append(direction)
+        player.travel(direction)
+
+
+def create_traversal_path():  # DFT
+    adjacency = dict()
+    traversal = Stack()
+    lastDir = None
+    lastRoom = None
+    while len(adjacency) < len(world.rooms):
+        if player.current_room.id not in adjacency:
+            adj = dict()
+            # Iterate over the neighbors
+            for ext in player.current_room.get_exits():
+                # Add "?" to each direccion to use in BFS
+                adj[ext] = "?"
+            adjacency[player.current_room.id] = adj
+        if lastRoom:
+            # print(f"Last Room: {lastRoom}")
+            adjacency[lastRoom][lastDir] = player.current_room.id
+            adjacency[player.current_room.id][reverseDir(lastDir)] = lastRoom
+        lastRoom = player.current_room.id
+
+        # moved = False
+        # for ext, room in adjacency[player.current_room.id].items():
+        #     if room == "?":
+        #         lastDir = ext
+        #         traversal.push(ext)
+        #         traversalPath.append(ext)
+        #         moved = True
+        #         player.travel(ext)
+        #         break
+
+        cur_adj = adjacency[player.current_room.id]
+        unvisited = list()
+        for direction, room in cur_adj.items():
+            if room == "?":
+                unvisited.append(direction)
+
+        if len(unvisited) > 0:
+            # Take ramdom direccion
+            random.shuffle(unvisited)
+            direction = unvisited[0]
+            lastDir = direction
+            traversal.push(direction)
+            traversal_path.append(direction)
+            player.travel(direction)
+        else:
+            # Get paths using BFS
+            path = find_shortest_path(adjacency)
+            if path is not None:
+                # Get the coodinates direccion
+                dir_path = get_dirPath(adjacency, path)
+                # Travel to the direccion
+                travel_dir_path(traversal_path, dir_path)
+                lastDir = dir_path[-1]
+                lastRoom = path[-2]
+
+        # if not moved:
+        #     ext = reverseDir(traversal.pop())
+        #     traversalPath.append(ext)
+        #     lastDir = ext
+        #     player.travel(ext)
+lowest = 999999
+shortestPath = []
+
+for i in range(10000):
+    player.current_room = world.starting_room
+    traversal_path = []
+    create_traversal_path()
+    if len(traversal_path) < lowest:
+        lowest = len(traversal_path)
+        shortestPath = traversal_path
+
+traversal_path = shortestPath
+print(shortestPath)
 
 
 print("----------------------")
